@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Classifier</title>
+    <style>
+      /* Style the file input button */
+      #file-input {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      /* Style the prediction result */
+      #prediction-result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Image Classifier</h1>
+    <input type="file" id="file-input">
+    <button onclick="predict()">Predict</button>
+    <div id="prediction-result"></div>
+
+    <script>
+      // Define a function to send the image file to the server and get the prediction
+      function predict() {
+        // Get the selected file
+        const fileInput = document.getElementById('file-input');
+        const file = fileInput.files[0];
+
+        // Create a FormData object to send the file data
+        const formData = new FormData();
+        formData.append('image', file);
+
+        // Send a POST request to the server with the file data
+        fetch('/predict', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Display the prediction result
+          const predictionResult = document.getElementById('prediction-result');
+          predictionResult.innerHTML = `Prediction: ${data.prediction}`;
+        });
+      }
+    </script>
+  </body>
+</html>
